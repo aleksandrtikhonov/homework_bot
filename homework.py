@@ -23,7 +23,10 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 handler = StreamHandler(stream=sys.stdout)
-handler.setFormatter(Formatter(fmt='[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s'))
+handler.setFormatter(Formatter(fmt='[%(asctime)s] '
+                                   '[%(levelname)s] '
+                                   '[%(name)s] '
+                                   '%(message)s'))
 logger.addHandler(handler)
 
 
