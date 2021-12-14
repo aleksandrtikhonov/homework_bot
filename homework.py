@@ -49,7 +49,7 @@ HOMEWORK_VERDICTS = {
 def send_message(bot, message):
     """Функция отправки сообщения в Телеграм."""
     try:
-        logger.debug(f'Отправка сообщения {message}в Телеграм')
+        logger.debug(f'Отправка сообщения - "{message}" в Телеграм')
         bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)
         logger.info('Сообщение отправлено')
     except Exception as error:
@@ -105,7 +105,7 @@ def check_response(response):
 def parse_status(homework):
     """Фунция парсит тело ответа на переменные."""
     logger.info(f'Получена домашняя работа {homework}')
-    if isinstance(homework, type(list)) is True:
+    if isinstance(homework, list):
         homework = homework[0]
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
@@ -167,20 +167,13 @@ def main():
             if message != last_message:
                 last_message = message
                 send_message(bot, message)
-
             current_timestamp = int(time.time())
         except Exception as error:
             error_message = f'Сбой в работе программы: {error}'
             logger.error(error_message)
             if error_message != last_message:
                 last_message = error_message
-                # Если возник Exception при отправке сообщения об ошибке
-                # то нужно его и тут перехватить
-                try:
-                    send_message(bot, error_message)
-                except Exception as error:
-                    error_message = f'Сбой при отправке error_message: {error}'
-                    logger.error(f'{error_message}')
+                send_message(bot, error_message)
         time.sleep(RETRY_TIME)
 
 
